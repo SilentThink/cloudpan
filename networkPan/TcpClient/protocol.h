@@ -7,6 +7,9 @@
 
 typedef unsigned int uint;
 
+#define REGIST_OK "regist ok"
+#define REGIST_FAILED "regist faild : name existed"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN=0,

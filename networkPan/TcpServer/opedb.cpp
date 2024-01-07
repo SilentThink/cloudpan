@@ -16,7 +16,7 @@ OpeDB &OpeDB::getInstance()
 void OpeDB::init()
 {
     m_db.setHostName("localhost");
-    m_db.setDatabaseName("C:\\Users\\27646\\Desktop\\networkPan\\TcpServer/cloud.db");
+    m_db.setDatabaseName("../TcpServer/cloud.db");
     if(m_db.open())
     {
         QSqlQuery query;
@@ -36,4 +36,16 @@ void OpeDB::init()
 OpeDB::~OpeDB()
 {
     m_db.close();
+}
+
+bool OpeDB::handleRegist(const char *name, const char *pwd)
+{
+    if(name == NULL || pwd == NULL)
+    {
+        return false;
+    }
+    QString data = QString("insert into usrInfo(name, pwd) values('%1','%2')").arg(name).arg(pwd);
+
+    QSqlQuery query;
+    return query.exec(data);
 }

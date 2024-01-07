@@ -21,9 +21,16 @@ public:
 
 public slots:
     void showConnect();
+    void recvMsg();
 
 private slots:
-    void on_pb_send_released();
+//    void on_pb_send_released();
+
+    void on_login_pb_released();
+
+    void on_regist_pb_released();
+
+    void on_logout_pb_released();
 
 private:
     Ui::TcpClient *ui;
