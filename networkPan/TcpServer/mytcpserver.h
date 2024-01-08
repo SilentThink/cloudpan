@@ -14,6 +14,9 @@ public:
     static MyTcpServer &getInstance();
     void incomingConnection(qintptr socketDescriptor);
 
+public slots:
+    void deleteSocket(MyTcpSocket *mySocket);
+
 private:
     QList<MyTcpSocket*> m_tcpSocketList;
 };

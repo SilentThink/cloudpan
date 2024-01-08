@@ -79,6 +79,18 @@ void TcpClient::recvMsg()
         }
         break;
     }
+    case ENUM_MSG_TYPE_LOGIN_RESPOND:
+    {
+        if(strcmp(pdu->caData,LOGIN_OK) == 0)
+        {
+            QMessageBox::information(this,"登录",LOGIN_OK);
+        }
+        else if(strcmp(pdu->caData,LOGIN_FAILED) == 0)
+        {
+            QMessageBox::information(this,"登录",LOGIN_FAILED);
+        }
+        break;
+    }
     default:
         break;
     }
@@ -108,7 +120,22 @@ void TcpClient::on_pb_send_released()
 
 void TcpClient::on_login_pb_released()
 {
-
+    QString strName = ui->name_le->text();
+    QString strPwd = ui->pwd_le->text();
+    if(!strName.isEmpty()&&!strPwd.isEmpty())
+    {
+        PDU *pdu = mkPDU(0);
+        pdu->uiMsgType = ENUM_MSG_TYPE_LOGIN_REQUEST;
+        strncpy(pdu->caData, strName.toStdString().c_str(),32);
+        strncpy(pdu->caData+32,strPwd.toStdString().c_str(),32);
+        m_tcpSocket.write((char*)pdu,pdu->uiPDULen);
+        free(pdu);
+        pdu = NULL;
+    }
+    else
+    {
+        QMessageBox::critical(this,"登录","登录失败：用户名或密码为空");
+    }
 }
 
 void TcpClient::on_regist_pb_released()

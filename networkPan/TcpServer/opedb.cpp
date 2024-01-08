@@ -42,10 +42,44 @@ bool OpeDB::handleRegist(const char *name, const char *pwd)
 {
     if(name == NULL || pwd == NULL)
     {
+        qDebug() << "name | pwd is NULL";
         return false;
     }
     QString data = QString("insert into usrInfo(name, pwd) values('%1','%2')").arg(name).arg(pwd);
 
     QSqlQuery query;
     return query.exec(data);
+}
+
+bool OpeDB::handleLogin(const char *name, const char *pwd)
+{
+    if(name == NULL || pwd == NULL)
+    {
+        qDebug() << "name | pwd is NULL";
+        return false;
+    }
+    QString data = QString("select * from usrInfo where name=\'%1\' and pwd = \'%2\' and online=0").arg(name).arg(pwd);
+    QSqlQuery query;
+    query.exec(data);
+    if(query.next())
+    {
+        data = QString("update usrInfo set online=1 where name=\'%1\' and pwd = \'%2\'").arg(name).arg(pwd);
+        QSqlQuery query;
+        query.exec(data);
+
+        return true;
+    }
+    else return false;
+}
+
+void OpeDB::handleOffline(const char *name)
+{
+    if(name == NULL)
+    {
+        qDebug() << "name is NULL";
+        return;
+    }
+    QString data = QString("update usrInfo set online=0 where name=\'%1\'").arg(name);
+    QSqlQuery query;
+    query.exec(data);
 }
